@@ -46,6 +46,14 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="实验四：约束布局 2 (ConstraintLayout)"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btn_compose"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="实验五：Jetpack Compose 实验"
         android:textSize="16sp" />
 
 </LinearLayout>

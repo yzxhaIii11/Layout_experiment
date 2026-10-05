@@ -1,5 +1,7 @@
 package com.example.layout_experiment;
 
+import com.example.layout_experiment.compose.ComposeExperimentActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -61,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
         Button btnConstraint2 = findViewById(R.id.btn_constraint2);
         btnConstraint2.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, ConstraintLayoutActivity2.class));
+        });
+
+        // 实验五：Compose 实验
+        Button btnCompose = findViewById(R.id.btn_compose);
+        btnCompose.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, ComposeExperimentActivity.class));
         });
     }
 }

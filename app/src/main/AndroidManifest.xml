@@ -35,6 +35,9 @@
         <activity
             android:name=".ConstraintLayoutActivity2"
             android:exported="false" />
+        <activity
+            android:name=".compose.ComposeExperimentActivity"
+            android:exported="false" />
 
     </application>
 
