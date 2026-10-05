@@ -1,25 +1,28 @@
-# Android 布局实验 (Layout Experiment)
+# 📱 Android 界面布局与 Compose 综合实验
 
 ## 📖 项目简介
-本项目是一个 Android 基础 UI 布局的深度实践项目。旨在通过复刻多个具有代表性的用户界面，深入剖析和对比 Android 传统视图体系中三种核心布局（`LinearLayout`、`TableLayout`、`ConstraintLayout`）的应用场景与优缺点。同时，本项目全面接入了 Android 现代化的沉浸式全屏（Edge-to-Edge）显示方案。
+本项目是一个 Android 基础 UI 布局的深度实践项目。旨在通过复刻多个具有代表性的用户界面，深入剖析和对比 Android 传统视图体系中三种核心布局（`LinearLayout`、`TableLayout`、`ConstraintLayout`）的应用场景与优缺点。同时，项目引入了现代化的声明式 UI 框架 **Jetpack Compose** 进行状态管理实践，并全面接入了 Android 现代化的沉浸式全屏（Edge-to-Edge）显示方案。
 
 ---
 
 ## 🛠️ 开发环境与依赖
 
-* **Min SDK Version**: API 24 (Android 7.0 Nougat)
-* **Target SDK Version**: API 37
-* **Compile SDK Version**: API 37
-* **Java 兼容版本**: Java 11 (`sourceCompatibility` & `targetCompatibility`)
-* **Gradle JVM**: JDK 25
-* **核心依赖**: `androidx.constraintlayout:constraintlayout`, `androidx.core:core-ktx`
+- **Min SDK Version**: API 24 (Android 7.0 Nougat)
+- **Target / Compile SDK Version**: API 37
+- **编程语言**: Java 11 / Kotlin 2.0+ 混编
+- **Gradle JVM**: JDK 25
+- **核心依赖**:
+   - `androidx.constraintlayout:constraintlayout`
+   - `androidx.core:core-ktx`
+   - `androidx.compose:compose-bom` (Jetpack Compose 物料清单)
+   - `androidx.activity:activity-compose`
 
 ---
 
 ## 📱 实验模块详细解析
 
 ### 📍 项目主导航 (MainActivity)
-作为应用程序的入口，主界面提供了一个直观的导航列表，通过点击不同的按钮通过 `Intent` 路由至四个独立的实验 Activity。
+作为应用程序的入口，主界面提供了一个直观的导航列表，通过点击不同的按钮通过 `Intent` 路由至五个独立的实验 Activity。
 
 <div align="center">
   <img src="./screenshots/main_nav.png" width="300" alt="首页导航界面" />
@@ -32,7 +35,7 @@
 
 **核心技术详解**：
 1. **多层级嵌套**：外层使用垂直方向 (`orientation="vertical"`) 的线性布局作为容器，内层嵌套 4 个水平方向 (`orientation="horizontal"`) 的线性布局代表每一行。
-2. **权重自适应 (`layout_weight`)**：为了实现网格在不同屏幕宽度下的完美比例，彻底放弃了硬编码的 `dp` 宽度，将 `layout_width` 设置为 `0dp`，并根据需求分配不同的权重（如 `1` : `1.6` : `1.3` : `1.1`）。
+2. **权重自适应 (`layout_weight`)**：为了实现网格在不同屏幕宽度下的完美比例，彻底放弃了硬编码的 `dp` 宽度，将 `layout_width` 设置为 `0dp`，并根据需求分配不同的权重（如 `1 : 1.6 : 1.3 : 1.1`）。
 3. **UI 美化**：利用自定义的 Drawable (`border_box.xml`) 为每个 TextView 绘制带边框的背景。
 
 <div align="center">
@@ -75,14 +78,36 @@
 **核心技术详解**：
 1. **引导线基准 (`Guideline`)**：在屏幕正中央设置了一条垂直的百分比引导线 (`app:layout_constraintGuide_percent="0.5"`)。DCA 卡片在其左侧，MARS 卡片在其右侧，确保了严格的对称性。
 2. **组件重叠与图层 (`Elevation`)**：将中间的双向箭头按钮 (`btn_sync`) 强行约束在 Guideline 的中心，利用其自身的宽度完美覆盖在两张绿色卡片的间隙上方，形成视觉错层。
-3. **圆形轨道定位 (`Circular Positioning`)**：
-   抛弃了传统的 XY 坐标系，使用极坐标系的思路来定位“环绕的火箭”。
-   * `app:layout_constraintCircle="@id/iv_planet"`：以星球图片为圆心。
-   * `app:layout_constraintCircleAngle="270"`：设定火箭处于圆心正左侧 270 度方向。
-   * `app:layout_constraintCircleRadius="95dp"`：设定环绕半径，精准控制二者距离。
+3. **圆形轨道定位 (`Circular Positioning`)**：抛弃了传统的 XY 坐标系，使用极坐标系的思路来定位“环绕的火箭”。
+   - `app:layout_constraintCircle="@id/iv_planet"`：以星球图片为圆心。
+   - `app:layout_constraintCircleAngle="270"`：设定火箭处于圆心正左侧 270 度方向。
+   - `app:layout_constraintCircleRadius="95dp"`：设定环绕半径，精准控制二者距离。
 
 <div align="center">
   <img src="./screenshots/constraint_layout2.png" width="300" alt="实验四：约束布局 2" />
+</div>
+
+---
+
+### 🚀 实验五：Jetpack Compose 状态管理 (课程学习任务)
+**设计目标**：脱离传统的 XML 视图体系，使用纯 Kotlin 代码和 Jetpack Compose 框架实现一个支持动态数据交互的“课程学习任务”管理列表。
+
+**核心技术详解**：
+1. **声明式 UI 构建**：利用 `Column`、`Row`、`Card` 等 Composable 函数快速搭建出极具现代化风格的界面，抛弃了繁杂的 XML 节点。
+2. **状态驱动 (State Management)**：通过 `remember { mutableStateOf() }` 和 `mutableStateListOf` 包装数据，实现了数据与 UI 的“单向数据流”。只要数据源发生改变，UI 就会自动触发重组（Recomposition）。
+3. **动态列表渲染 (`LazyColumn`)**：使用 `LazyColumn` 替代了传统的 `RecyclerView` + `Adapter` 方案，以极简的代码实现了支持复用的长列表渲染。
+
+**交互逻辑演示**：
+- **添加任务**：输入框支持双向绑定，点击按钮后动态向列表中插入新任务，顶部总数实时刷新。
+- **状态同步**：勾选 Checkbox 后，任务文本自动改变颜色并增加**删除线** (`TextDecoration.LineThrough`)，顶部的“已完成”计数器精准递增。
+- **动态删除**：点击单项的删除按钮，从状态列表中移除对应对象，UI 瞬间自适应更新。
+
+<div align="center">
+  <img src="./screenshots/compose_init.png" width="250" alt="Compose初始状态"/>
+  &nbsp;&nbsp;
+  <img src="./screenshots/compose_add.png" width="250" alt="Compose添加任务"/>
+  &nbsp;&nbsp;
+  <img src="./screenshots/compose_update.png" width="250" alt="Compose状态更新"/>
 </div>
 
 ---
@@ -93,13 +118,13 @@
 
 1. **全面屏使能**：在所有 Activity 的 `onCreate` 中调用 `EdgeToEdge.enable(this)`。
 2. **动态 Insets 处理**：利用 `ViewCompat.setOnApplyWindowInsetsListener` 监听系统窗口（状态栏、导航栏、刘海屏）的尺寸，并将这些尺寸以 `Padding` 的形式叠加到根视图上，既实现了背景的沉浸延展，又保证了内容不会被系统 UI 遮挡。
-3. **状态栏图标智能变色**：由于四个实验的背景色差异巨大（如 LinearLayout 为纯黑，MainActivity 为浅灰），项目中通过 `WindowInsetsControllerCompat.setAppearanceLightStatusBars()` 根据背景颜色的深浅，动态将状态栏文字和图标切换为黑色或白色，保证了极致的可读性。
+3. **状态栏图标智能变色**：由于各实验的背景色差异巨大（如 LinearLayout 为纯黑，MainActivity 为浅灰），项目中通过 `WindowInsetsControllerCompat.setAppearanceLightStatusBars()` 根据背景颜色的深浅，动态将状态栏文字和图标切换为黑色或白色，保证了极致的可读性。
 
 ---
 
 ## 🚀 运行与编译指南
 
-1. **克隆项目**到本地环境。
-2. 使用 **Android Studio (推荐最新版)** 打开项目根目录。
-3. 确保你的环境中已配置好 **Java 11/JDK 25** 以及 **Android SDK (API 37)**。
-4. 等待 Gradle 同步完成后，点击 `Run 'app'` 即可在模拟器或实体测试机上体验。
+1. **克隆项目**到本地开发环境。
+2. 使用 **Android Studio** 打开项目根目录。
+3. 确保你的环境中已配置好 **Java 11 / JDK 25** 以及 **Android SDK (API 37)**，并已开启全局科学网络代理以顺畅拉取 Compose 依赖库。
+4. 待 Gradle 底部进度条同步完成后（无报错状态），点击顶部的 `Run 'app'` 即可在模拟器或实体测试机上体验。
